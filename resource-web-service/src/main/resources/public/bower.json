@@ -1,0 +1,15 @@
+{
+  "name": "angular-security",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "latest",
+    "bootstrap": "^3.2.0",
+    "angular-cookies": "latest",
+    "angular-resource": "latest",
+    "angular-route": "latest",
+    "angular-jwt": "latest",
+    "a0-angular-storage": "latest"
+  },
+  "appPath": "app",
+  "moduleName": "angularSecurityApp"
+}

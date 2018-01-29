@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 8765
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+zuul:
+  routes:
+    products-service: /api/products-service/**
+    auth-service: /api/auth-service/**
+    details-service: /api/details-service/**
+
+zuul.sensitiveHeaders: Cookie,Set-Cookie

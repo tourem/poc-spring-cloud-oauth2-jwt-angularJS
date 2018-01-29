@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Employee Manager</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body ng-cloak ng-app="employeeManagerApp">
+
+<div class="header">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="#/">Employee Manager</a>
+            </div>
+
+            <ul ng-show="loggedIn" class="nav navbar-nav">
+                <li><a ng-href="#/employees">Employees</a></li>
+            </ul>
+
+            <div class="collapse navbar-collapse pull-right" id="js-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li ng-hide="loggedIn"><a ng-href=" #!/login">Login</a></li>
+                    <li ng-show="loggedIn" ><a ng-href="#!/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div ng-view=""></div>
+</div>
+
+<div class="footer">
+    <div class="container">
+    </div>
+</div>
+
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="/bower_components/angular-resource/angular-resource.js"></script>
+<script src="/bower_components/angular-route/angular-route.js"></script>
+<script src="/bower_components/angular-jwt/dist/angular-jwt.js"></script>
+<script src="/bower_components/a0-angular-storage/dist/angular-storage.js"></script>
+
+<script src="/scripts/app.js"></script>
+<script src="/scripts/controllers/employeeController.js"></script>
+<script src="/scripts/controllers/loginController.js"></script>
+<script src="/scripts/controllers/mainController.js"></script>
+<script src="/scripts/config/config.js"></script>
+<script src="/scripts/services/employeeService.js"></script>
+<script src="/scripts/services/loginService.js"></script>
+
+</body>
+</html>
