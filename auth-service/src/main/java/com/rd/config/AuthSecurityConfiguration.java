@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 
@@ -28,6 +29,10 @@ public class AuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
+    @Autowired
+    TokenEndpoint tokenEndpoint;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
@@ -35,7 +40,11 @@ public class AuthSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated()
+        http.authorizeRequests()
+                .antMatchers("/oauth/switch_user").hasRole("ADMIN")
+                .antMatchers("/switch_user_exit").hasRole("PREVIOUS_ADMINISTRATOR")
+                .anyRequest()
+                .authenticated()
                 .and()
                 .csrf().disable();
     }
