@@ -17,4 +17,8 @@ cd auth-service
 
 docker-compose up
 
+# scale product service
+
+docker-compose scale product=2
+
 
