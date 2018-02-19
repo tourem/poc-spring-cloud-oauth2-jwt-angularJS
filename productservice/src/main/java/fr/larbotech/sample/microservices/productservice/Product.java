@@ -1,5 +1,7 @@
 package fr.larbotech.sample.microservices.productservice;
 
+import java.net.InetAddress;
+
 public class Product {
 
     private String id;
@@ -10,8 +12,10 @@ public class Product {
         this.id = id;
     }
 
-    static Product getMockProduct(String id) {
-        return new Product(id);
+    static Product getMockProduct(String id) throws Exception{
+        Product product = new Product(id);
+        product.setDetails(InetAddress.getLocalHost().getHostAddress());
+        return product;
     }
 
     public String getId() {

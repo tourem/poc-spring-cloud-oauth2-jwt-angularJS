@@ -13,14 +13,14 @@ public class ProductController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') or #oauth2.hasScope('service')")
-    public Product find(@PathVariable String id) {
+    public Product find(@PathVariable String id) throws Exception {
         return Product.getMockProduct(id);
     }
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     //@PreAuthorize("#oauth2.hasScope('read')")
-    public Product details(@PathVariable String id) {
-        return Product.getMockProduct("12");
+    public Product details(@PathVariable String id) throws Exception {
+        return Product.getMockProduct(id);
     }
 
 
