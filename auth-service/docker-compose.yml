@@ -1,0 +1,57 @@
+version: "3"
+
+networks:
+  pspe-microservice--network:
+    external: true
+
+services:
+  traefik:
+    image: localhost:5000/traefik
+    command: -c /dev/null --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - pspe-microservice--network
+  product:
+    image: localhost:5000/docker-product-service:latest
+    expose:
+      - "8091"
+    labels:
+      - "traefik.backend=product"
+      - "traefik.frontend.rule=Host:product.docker.localhost"
+      - "traefik.docker.network=pspe-microservice--network"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.port=8091"
+    networks:
+       - pspe-microservice--network
+  auth:
+    image: localhost:5000/docker-auth-service:latest
+    expose:
+      - "8280"
+    labels:
+      - "traefik.backend=auth"
+      - "traefik.frontend.rule=Host:auth.docker.localhost"
+      - "traefik.docker.network=pspe-microservice--network"
+      - "traefik.port=8280"
+    networks:
+      - pspe-microservice--network
+  web:
+      image: localhost:5000/docker-webapp-service:latest
+      expose:
+        - "9191"
+      labels:
+        - "traefik.backend=web"
+        - "traefik.frontend.rule=Host:web.docker.localhost"
+        - "traefik.docker.network=pspe-microservice--network"
+        - "traefik.port=9191"
+      environment:
+        - "PRODUCT_SERVICE=eureka-serviceregistry"
+      extra_hosts:
+        - "product.docker.localhost:192.168.150.1"
+      links:
+        - "traefik"
+      networks:
+        - pspe-microservice--network

@@ -25,9 +25,11 @@
 		<spring-cloud.version>Dalston.SR4</spring-cloud.version>
 		<spring-security-oauth2.version>2.0.10.RELEASE</spring-security-oauth2.version>
 		<commons-io.version>2.4</commons-io.version>
+		<docker.image.name>docker-product-service</docker.image.name>
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
@@ -89,6 +91,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<skipDockerBuild>false</skipDockerBuild>
+					<imageName>localhost:5000/${docker.image.name}</imageName>
+					<dockerDirectory>${basedir}/src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
