@@ -8,6 +8,20 @@
     docker pull traefik
     docker tag traefik localhost:5000/traefik
     docker push localhost:5000/traefik
+    
+# remote :
+  - docker run -d -p 5000:5000 --restart=always --name registry registry:2
+  - TEST : curl -X GET http://IP:5000/v2/
+  - docker push IP:5000/alpine-oraclejdk8:slim
+  - docker tag frolvlad/alpine-oraclejdk8:slim IP:5000/alpine-oraclejdk8:slim
+  - docker push IP:5000/alpine-oraclejdk8:slim
+  - docker tag traefik IP:5000/traefik
+  - docker push IP:5000/traefik
+  - sudo vi /etc/docker/daemon.json
+   ({
+        "insecure-registries" : ["IP:5000"]
+    })
+
   
 # Exec
 
