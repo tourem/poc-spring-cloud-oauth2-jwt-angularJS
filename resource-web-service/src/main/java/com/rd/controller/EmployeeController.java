@@ -1,5 +1,6 @@
 package com.rd.controller;
 
+import com.rd.config.client.AuthServiceClient;
 import com.rd.config.client.ProductServiceClient;
 import com.rd.config.client.feign.FeigBuilderComponent;
 import com.rd.domain.Employee;
@@ -9,7 +10,6 @@ import com.rd.repository.AuthorityRepository;
 import com.rd.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -32,8 +33,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @Value("${product.host.service}")
+    @Value("${product.service.url}")
     private String productService;
+
+    @Value("${auth.service.url}")
+    private String authService;
 
     @Autowired
     private FeigBuilderComponent feigBuilderComponent;
@@ -47,9 +51,10 @@ public class EmployeeController {
     public ResponseEntity<Employee> saveEmployee(@RequestBody @Valid Employee employee,
                                                  BindingResult result, HttpServletRequest request) {
 
-        HttpHeaders headers = new HttpHeaders();
 
         ResponseEntity<ProductResource> responseRemote = details("12");
+
+        create("ibra");
 
         create(employee.getFirstName());
         if (!result.hasErrors()) {
@@ -63,7 +68,7 @@ public class EmployeeController {
     }
 
     public ResponseEntity<ProductResource> details(String id) {
-        ProductServiceClient api = feigBuilderComponent.target(ProductServiceClient.class, productService);
+        ProductServiceClient api = feigBuilderComponent.targetUser(ProductServiceClient.class, productService);
         ProductResource productResource = api.getProduct(id);
         return ResponseEntity.ok(productResource);
     }
@@ -75,7 +80,8 @@ public class EmployeeController {
         user.setEmail("ibra@gao.ml");
         user.setActivated(true);
         user.setPassword("ibra");
-        // user.setAuthorities(new HashSet<>(authorityRepository.findAll()));
-        // authClient.createUser(user);
+        user.setAuthorities(new HashSet<>(authorityRepository.findAll()));
+        AuthServiceClient api = feigBuilderComponent.targetService(AuthServiceClient.class, authService);
+        api.createUser(user);
     }
 }

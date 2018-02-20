@@ -11,15 +11,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class FeigBuilderComponent {
     @Autowired
-    @Qualifier("tokenRequestInterceptor")
-    private RequestInterceptor requestInterceptor;
+    @Qualifier("userTokenRequestInterceptor")
+    private RequestInterceptor userTokenRequestInterceptor;
 
-    public <T> T target(Class<T> apiType, String url) {
+    @Autowired
+    @Qualifier("serviceTokenRequestInterceptor")
+    private RequestInterceptor serviceTokenRequestInterceptor;
+
+    public <T> T targetUser(Class<T> apiType, String url) {
         return Feign.builder()
                 .encoder(new GsonEncoder())
                 .decoder(new GsonDecoder())
-                .requestInterceptor(requestInterceptor)
+                .requestInterceptor(userTokenRequestInterceptor)
                 .target(apiType, url);
     }
 
+    public <T> T targetService(Class<T> apiType, String url) {
+        return Feign.builder()
+                .encoder(new GsonEncoder())
+                .decoder(new GsonDecoder())
+                .requestInterceptor(serviceTokenRequestInterceptor)
+                .target(apiType, url);
+    }
 }

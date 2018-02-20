@@ -98,7 +98,7 @@ public class ResourceWebSecurityServerConfiguration extends ResourceServerConfig
     }
 
 
-    @Bean
+    @Bean("serviceTokenRequestInterceptor")
     public RequestInterceptor oauth2FeignRequestInterceptor() {
         return new OAuth2FeignRequestInterceptor(new DefaultOAuth2ClientContext(), clientCredentialsResourceDetails());
     }
